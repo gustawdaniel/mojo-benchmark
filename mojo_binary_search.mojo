@@ -32,13 +32,14 @@ fn get_collection() -> DynamicVector[Int]:
     return v
 
 
-fn test_mojo_binary_search() -> F6f644:
+fn test_mojo_binary_search() -> FloatLiteral:
     fn test_closure():
         _ = mojo_binary_search(SIZE - 1, get_collection())
-    return F64(Benchmark(NUM_WARMUP, MAX_ITERS).run[test_closure]()) / 1e9
+    return Float64(Benchmark(NUM_WARMUP, MAX_ITERS).run[test_closure]()) / 1e9
 
 
-print(
-    "Average execution time of func in sec ",
-    test_mojo_binary_search(),
-)
+fn main():
+	print(
+	    "Average execution time of func in sec ",
+	    test_mojo_binary_search(),
+	)
