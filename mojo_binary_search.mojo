@@ -1,45 +1,38 @@
-"""Implements basic binary search."""
+from time import now
+from collections import List
 
-from Benchmark import Benchmark
-from Vector import DynamicVector
+def binary_search(arr : List[Int32], x : Int32) -> Int32:
+    low = 0
+    high = len(arr) - 1
+    mid = 0
 
+    while low <= high:
+        mid = (high + low) // 2
 
-alias SIZE = 1000000
-alias NUM_WARMUP = 0
-alias MAX_ITERS = 100
+        if arr[mid] < x:
+            low = mid + 1
+        elif arr[mid] > x:
+            high = mid - 1
+        else:
+            return mid
 
-
-fn mojo_binary_search(element: Int, array: DynamicVector[Int]) -> Int:
-    var start = 0
-    var stop = len(array) - 1
-    while start <= stop:
-        let index = (start + stop) // 2
-        let pivot = array[index]
-        if pivot == element:
-            return index
-        elif pivot > element:
-            stop = index - 1
-        elif pivot < element:
-            start = index + 1
     return -1
 
 
-@parameter  # statement runs at compile-time.
-fn get_collection() -> DynamicVector[Int]:
-    var v = DynamicVector[Int](SIZE)
-    for i in range(SIZE):
-        v.push_back(i)
-    return v
+def main():
+    n = 1_000_000
 
+    arr = List[Int32]()
+    for i in range(n):
+        arr.append(i)
 
-fn test_mojo_binary_search() -> FloatLiteral:
-    fn test_closure():
-        _ = mojo_binary_search(SIZE - 1, get_collection())
-    return Float64(Benchmark(NUM_WARMUP, MAX_ITERS).run[test_closure]()) / 1e9
+    results = List[Int32]()
 
+    t = now()
 
-fn main():
-	print(
-	    "Average execution time of func in sec ",
-	    test_mojo_binary_search(),
-	)
+    for i in range(n):
+        results.append(binary_search(arr, i))
+
+    print((now() - t) / 1e6, "ms")
+
+    print("Results: ", len(results))
